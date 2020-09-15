@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectsDisableTeslas", "ObjectsDisableTeslas\ObjectsDisableTeslas.csproj", "{4EC9E3F0-2926-4485-AD70-8870BE132366}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EC9E3F0-2926-4485-AD70-8870BE132366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EC9E3F0-2926-4485-AD70-8870BE132366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EC9E3F0-2926-4485-AD70-8870BE132366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EC9E3F0-2926-4485-AD70-8870BE132366}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1D91812-0BB4-44E0-83DC-BDC081975BC3}
+	EndGlobalSection
+EndGlobal

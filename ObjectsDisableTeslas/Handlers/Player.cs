@@ -17,11 +17,12 @@ namespace ObjectsDisableTeslas.Handlers
                 ev.IsTriggerable = false;
             }
         }
+        Random random = new Random();
         public void SwitchItem(ChangingItemEventArgs ev)
         {
             if (ObjectsDisableTeslas.instance.Config.teslaDisableItems.Contains<ItemType>(ev.NewItem.id))
             {
-                ev.Player.ShowHint("This Item Will Disable tesla gates when held", 5);
+                ev.Player.ShowHint(ObjectsDisableTeslas.instance.Config.teslaHints[random.Next(0, ObjectsDisableTeslas.instance.Config.teslaHints.Length)], ObjectsDisableTeslas.instance.Config.teslaHintDuration);
             }
         }
     }

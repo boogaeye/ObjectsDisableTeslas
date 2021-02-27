@@ -13,21 +13,21 @@ namespace ObjectsDisableTeslas
         private static readonly Lazy<ObjectsDisableTeslas> LazyInstance = new Lazy<ObjectsDisableTeslas>(valueFactory: () => new ObjectsDisableTeslas());
         static public ObjectsDisableTeslas instance => LazyInstance.Value;
         public override PluginPriority Priority { get; } = PluginPriority.Lowest;
+        public EventHandlers EventHandlers;
         public ObjectsDisableTeslas()
         {
 
         }
-        Handlers.Player player;
         public override void OnEnabled()
         {
-            player = new Handlers.Player();
-            Exiled.Events.Handlers.Player.TriggeringTesla += player.OnTeslaTrigger;
-            Exiled.Events.Handlers.Player.ChangingItem += player.SwitchItem;
+            EventHandlers = new EventHandlers(this);
+            Exiled.Events.Handlers.Player.TriggeringTesla += EventHandlers.OnTeslaTrigger;
+            Exiled.Events.Handlers.Player.ChangingItem += EventHandlers.SwitchItem;
         }
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Player.TriggeringTesla -= player.OnTeslaTrigger;
-            Exiled.Events.Handlers.Player.ChangingItem -= player.SwitchItem;
+            Exiled.Events.Handlers.Player.TriggeringTesla -= EventHandlers.OnTeslaTrigger;
+            Exiled.Events.Handlers.Player.ChangingItem -= EventHandlers.SwitchItem;
         }
     }
 }

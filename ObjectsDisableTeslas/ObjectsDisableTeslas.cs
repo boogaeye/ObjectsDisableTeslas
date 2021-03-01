@@ -13,6 +13,7 @@ namespace ObjectsDisableTeslas
         private static readonly Lazy<ObjectsDisableTeslas> LazyInstance = new Lazy<ObjectsDisableTeslas>(valueFactory: () => new ObjectsDisableTeslas());
         static public ObjectsDisableTeslas instance => LazyInstance.Value;
         public override PluginPriority Priority { get; } = PluginPriority.Lowest;
+        public override string Author { get; } = "BoogaEye";
         public EventHandlers EventHandlers;
         public ObjectsDisableTeslas()
         {
@@ -23,11 +24,17 @@ namespace ObjectsDisableTeslas
             EventHandlers = new EventHandlers(this);
             Exiled.Events.Handlers.Player.TriggeringTesla += EventHandlers.OnTeslaTrigger;
             Exiled.Events.Handlers.Player.ChangingItem += EventHandlers.SwitchItem;
+            Exiled.Events.Handlers.Player.UsingMedicalItem += EventHandlers.HealItem;
+            Exiled.Events.Handlers.Player.Hurting += EventHandlers.OnHurt;
+            Exiled.Events.Handlers.Player.UsingMedicalItem += EventHandlers.HealItem;
         }
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Player.TriggeringTesla -= EventHandlers.OnTeslaTrigger;
             Exiled.Events.Handlers.Player.ChangingItem -= EventHandlers.SwitchItem;
+            Exiled.Events.Handlers.Player.UsingMedicalItem -= EventHandlers.HealItem;
+            Exiled.Events.Handlers.Player.Hurting -= EventHandlers.OnHurt;
+            Exiled.Events.Handlers.Player.UsingMedicalItem -= EventHandlers.HealItem;
         }
     }
 }

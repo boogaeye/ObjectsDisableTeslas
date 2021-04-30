@@ -10,9 +10,9 @@
 
     public class EventHandlers
     {
-        private readonly Plugin<Config> plugin;
+        private readonly ObjectsDisableTeslas plugin;
 
-        public EventHandlers(Plugin<Config> plugin) => this.plugin = plugin;
+        public EventHandlers(ObjectsDisableTeslas plugin) => this.plugin = plugin;
 
         private readonly Random random = new Random();
 
@@ -20,28 +20,28 @@
 
         public void SwitchItem(ChangingItemEventArgs ev)
         {
-            if (this.plugin.Config.TeslaDisableItems.ContainsKey(ev.NewItem.id))
+            if (plugin.Config.TeslaDisableItems.ContainsKey(ev.NewItem.id))
             {
-                if (this.plugin.Config.TeslaDisableItems[ev.NewItem.id])
+                if (plugin.Config.TeslaDisableItems.TryGetValue(ev.NewItem.id, out bool value) && value)
                 {
-                    if (this.plugin.Config.TeslaHintsNotHoldable.Length == 0)
+                    if (plugin.Config.TeslaHintsNotHoldable.Length == 0)
                     {
                         return;
                     }
 
                     ev.Player.ShowHint(
-                        this.plugin.Config.TeslaHintsNotHoldable[
-                            random.Next(0, this.plugin.Config.TeslaHintsNotHoldable.Length)],
-                        this.plugin.Config.TeslaHintDuration);
+                        plugin.Config.TeslaHintsNotHoldable[
+                            random.Next(0, plugin.Config.TeslaHintsNotHoldable.Length)],
+                        plugin.Config.TeslaHintDuration);
                 }
                 else
                 {
-                    if (this.plugin.Config.TeslaHints.Length == 0)
+                    if (plugin.Config.TeslaHints.Length == 0)
                         return;
 
                     ev.Player.ShowHint(
-                        this.plugin.Config.TeslaHints[random.Next(0, this.plugin.Config.TeslaHints.Length)],
-                        this.plugin.Config.TeslaHintDuration);
+                        plugin.Config.TeslaHints[random.Next(0, plugin.Config.TeslaHints.Length)],
+                        plugin.Config.TeslaHintDuration);
                 }
             }
         }
@@ -55,13 +55,13 @@
                 return;
             }
 
-            if (ev.Player.GetEffectActive<Scp268>() && this.plugin.Config.EnableScp268TeslaDisable)
+            if (ev.Player.GetEffectActive<Scp268>() && plugin.Config.EnableScp268TeslaDisable)
             {
                 ev.IsTriggerable = false;
                 return;
             }
 
-            if (this.plugin.Config.DisableTeslaRoles.Contains(ev.Player.Role))
+            if (plugin.Config.DisableTeslaRoles.Contains(ev.Player.Role))
             {
                 ev.IsTriggerable = false;
 
@@ -72,13 +72,13 @@
 
             foreach (Inventory.SyncItemInfo i in ev.Player.Inventory.items)
             {
-                if (this.plugin.Config.TeslaDisableItems.TryGetValue(i.id, out bool value) && value)
+                if (plugin.Config.TeslaDisableItems.TryGetValue(i.id, out bool value) && value)
                 {
                     ev.IsTriggerable = false;
                     break;
                 }
 
-                if (this.plugin.Config.TeslaDisableItems.ContainsKey(ev.Player.Inventory.curItem))
+                if (plugin.Config.TeslaDisableItems.ContainsKey(ev.Player.Inventory.curItem))
                 {
                     ev.IsTriggerable = false;
                     Timing.RunCoroutine(Swiping(teslaName));
@@ -91,17 +91,17 @@
 
         public IEnumerator<float> Swiping(string name)
         {
-            if (this.plugin.Config.HoldTesla)
+            if (plugin.Config.HoldTesla && !teslaLocks.Contains(name))
             {
                 teslaLocks.Add(name);
-                yield return Timing.WaitForSeconds(this.plugin.Config.HoldTime);
+                yield return Timing.WaitForSeconds(plugin.Config.HoldTime);
                 teslaLocks.Remove(name);
             }
         }
 
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (this.plugin.Config.Scp207LevelTeslaImmune != -1 && this.plugin.Config.Scp207LevelTeslaImmune <= ev.Target.GetEffectIntensity<Scp207>() && ev.HitInformations.GetDamageType() == DamageTypes.Tesla)
+            if (plugin.Config.Scp207LevelTeslaImmune != -1 && plugin.Config.Scp207LevelTeslaImmune <= ev.Target.GetEffectIntensity<Scp207>() && ev.HitInformations.GetDamageType() == DamageTypes.Tesla)
             {
 
                 ev.IsAllowed = false;
@@ -111,9 +111,9 @@
 
         public void HealItem(UsingMedicalItemEventArgs ev)
         {
-            if (this.plugin.Config.Scp207LevelTeslaImmune != -1 && this.plugin.Config.Scp207LevelTeslaImmune - 1 <= ev.Player.GetEffectIntensity<Scp207>() && ev.Item == ItemType.SCP207)
+            if (plugin.Config.Scp207LevelTeslaImmune != -1 && plugin.Config.Scp207LevelTeslaImmune - 1 <= ev.Player.GetEffectIntensity<Scp207>() && ev.Item == ItemType.SCP207)
             {
-                ev.Player.ShowHint("You are now immune to tesla gates");
+                ev.Player.ShowHint(plugin.Config.TextTranslations.Scp207TeslaImmuneText);
             }
         }
     }

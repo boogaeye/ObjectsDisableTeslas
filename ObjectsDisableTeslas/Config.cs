@@ -8,6 +8,9 @@ namespace ObjectsDisableTeslas
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
+        public int HoldTime { get; set; } = 5;
+        [Description("Disables the tesla gate for the Hold Time")]
+        public bool HoldTesla { get; set; } = false;
         [Description("the level scp207 has to be to be immune to tesla gates. set it to -1 to disable")]
         public int SCP207LevelTeslaImmune { get; set; } = -1;
         [Description("makes it where if your invisable you cant trigger teslas")]

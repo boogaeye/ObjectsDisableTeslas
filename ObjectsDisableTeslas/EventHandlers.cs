@@ -75,7 +75,6 @@
                 if (this.plugin.Config.TeslaDisableItems.TryGetValue(i.id, out bool value) && value)
                 {
                     ev.IsTriggerable = false;
-                    Timing.RunCoroutine(Swiping(teslaName));
                     break;
                 }
 
@@ -87,7 +86,6 @@
                 }
 
                 ev.IsTriggerable = true;
-
             }
         }
 
@@ -103,12 +101,11 @@
 
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (this.plugin.Config.Scp207LevelTeslaImmune != -1 && this.plugin.Config.Scp207LevelTeslaImmune <= ev.Target.GetEffectIntensity<Scp207>())
+            if (this.plugin.Config.Scp207LevelTeslaImmune != -1 && this.plugin.Config.Scp207LevelTeslaImmune <= ev.Target.GetEffectIntensity<Scp207>() && ev.HitInformations.GetDamageType() == DamageTypes.Tesla)
             {
-                if (ev.HitInformations.GetDamageType() == DamageTypes.Tesla)
-                {
-                    ev.IsAllowed = false;
-                }
+
+                ev.IsAllowed = false;
+
             }
         }
 

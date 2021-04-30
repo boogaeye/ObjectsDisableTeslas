@@ -36,7 +36,7 @@
                 }
                 else
                 {
-                    if (this.plugin.Config.TeslaHints.Count() == 0)
+                    if (this.plugin.Config.TeslaHints.Length == 0)
                         return;
 
                     ev.Player.ShowHint(
@@ -72,28 +72,22 @@
 
             foreach (Inventory.SyncItemInfo i in ev.Player.Inventory.items)
             {
-                if (this.plugin.Config.TeslaDisableItems.ContainsKey(i.id))
+                if (this.plugin.Config.TeslaDisableItems.TryGetValue(i.id, out bool value) && value)
                 {
-                    if (this.plugin.Config.TeslaDisableItems.TryGetValue(i.id, out bool value) && value)
-                    {
-                        ev.IsTriggerable = false;
-                        Timing.RunCoroutine(Swiping(teslaName));
-                        break;
-                    }
-
-                    if (this.plugin.Config.TeslaDisableItems.ContainsKey(ev.Player.Inventory.curItem))
-                    {
-                        ev.IsTriggerable = false;
-                        Timing.RunCoroutine(Swiping(teslaName));
-                        break;
-                    }
-
-                    ev.IsTriggerable = true;
+                    ev.IsTriggerable = false;
+                    Timing.RunCoroutine(Swiping(teslaName));
+                    break;
                 }
-                else
+
+                if (this.plugin.Config.TeslaDisableItems.ContainsKey(ev.Player.Inventory.curItem))
                 {
-                    ev.IsTriggerable = true;
+                    ev.IsTriggerable = false;
+                    Timing.RunCoroutine(Swiping(teslaName));
+                    break;
                 }
+
+                ev.IsTriggerable = true;
+
             }
         }
 

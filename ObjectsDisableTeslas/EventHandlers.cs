@@ -55,10 +55,9 @@ namespace ObjectsDisableTeslas
             if (this.plugin.Config.disableTeslaRoles.Contains(ev.Player.Role))
             {
                 ev.IsTriggerable = false;
-                if (this.plugin.Config.HoldTesla)
-                {
-                    Timing.RunCoroutine(Swiping(teslaName));
-                }
+
+                Timing.RunCoroutine(Swiping(teslaName));
+
                 return;
             }
             foreach (Inventory.SyncItemInfo i in ev.Player.Inventory.items)
@@ -68,10 +67,7 @@ namespace ObjectsDisableTeslas
                     if (this.plugin.Config.teslaDisableItems[i.id])
                     {
                         ev.IsTriggerable = false;
-                        if (this.plugin.Config.HoldTesla && ev.Player.Inventory.curItem == i.id)
-                        {
-                            Timing.RunCoroutine(Swiping(teslaName));
-                        }
+                        Timing.RunCoroutine(Swiping(teslaName));
                         break;
                     }
                     else
@@ -79,10 +75,7 @@ namespace ObjectsDisableTeslas
                         if (this.plugin.Config.teslaDisableItems.ContainsKey(ev.Player.Inventory.curItem))
                         {
                             ev.IsTriggerable = false;
-                            if (this.plugin.Config.HoldTesla)
-                            {
-                                Timing.RunCoroutine(Swiping(teslaName));
-                            }
+                            Timing.RunCoroutine(Swiping(teslaName));
                             break;
                         }
                         else
@@ -99,9 +92,12 @@ namespace ObjectsDisableTeslas
         }
         public IEnumerator<float> Swiping(string name)
         {
-            teslaLocks.Add(name);
-            yield return Timing.WaitForSeconds(this.plugin.Config.HoldTime);
-            teslaLocks.Remove(name);
+            if (this.plugin.Config.HoldTesla)
+            {
+                teslaLocks.Add(name);
+                yield return Timing.WaitForSeconds(this.plugin.Config.HoldTime);
+                teslaLocks.Remove(name);
+            }
         }
         public void OnHurt(HurtingEventArgs ev)
         {

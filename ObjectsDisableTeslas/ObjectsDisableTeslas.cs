@@ -10,9 +10,7 @@ namespace ObjectsDisableTeslas
 {
     public class ObjectsDisableTeslas : Plugin<Config>
     {
-        private static readonly Lazy<ObjectsDisableTeslas> LazyInstance = new Lazy<ObjectsDisableTeslas>(valueFactory: () => new ObjectsDisableTeslas());
-        static public ObjectsDisableTeslas instance => LazyInstance.Value;
-        public override PluginPriority Priority { get; } = PluginPriority.Lowest;
+        public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0, 0);
         public override string Author { get; } = "BoogaEye";
         public EventHandlers EventHandlers;
         public ObjectsDisableTeslas()

@@ -13,10 +13,6 @@ namespace ObjectsDisableTeslas
         public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0, 0);
         public override string Author { get; } = "BoogaEye";
         public EventHandlers EventHandlers;
-        public ObjectsDisableTeslas()
-        {
-
-        }
         public override void OnEnabled()
         {
             EventHandlers = new EventHandlers(this);

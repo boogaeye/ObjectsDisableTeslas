@@ -33,7 +33,5 @@
 
         [Description("sets the amount of time that hints will stay on the players screen")]
         public int TeslaHintDuration { get; set; } = 5;
-
-        public Translations TextTranslations { get; set; }
     }
 }

@@ -18,6 +18,8 @@
 
         public List<string> teslaLocks = new List<string>();
 
+        public List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
+
         public void SwitchItem(ChangingItemEventArgs ev)
         {
             if (plugin.Config.TeslaDisableItems.ContainsKey(ev.NewItem.id))
@@ -65,7 +67,7 @@
             {
                 ev.IsTriggerable = false;
 
-                Timing.RunCoroutine(Swiping(teslaName));
+                Coroutines.Add(Timing.RunCoroutine(Swiping(teslaName)));
 
                 return;
             }
@@ -81,7 +83,7 @@
                 if (plugin.Config.TeslaDisableItems.ContainsKey(ev.Player.Inventory.curItem))
                 {
                     ev.IsTriggerable = false;
-                    Timing.RunCoroutine(Swiping(teslaName));
+                    Coroutines.Add(Timing.RunCoroutine(Swiping(teslaName)));
                     break;
                 }
 
@@ -113,8 +115,18 @@
         {
             if (plugin.Config.Scp207LevelTeslaImmune != -1 && plugin.Config.Scp207LevelTeslaImmune - 1 <= ev.Player.GetEffectIntensity<Scp207>() && ev.Item == ItemType.SCP207)
             {
-                ev.Player.ShowHint(plugin.Config.TextTranslations.Scp207TeslaImmuneText);
+                ev.Player.ShowHint(plugin.Translation.Scp207TeslaImmuneText);
             }
+        }
+
+        public void OnRestartingRound()
+        {
+            foreach (var coro in Coroutines)
+            {
+                Timing.KillCoroutines(coro);
+            }
+
+            Coroutines.Clear();
         }
     }
 }
